@@ -25,6 +25,10 @@ compute(neg(X), Answer) :-
     Answer is -XNumeric,
     !.
 
+compute(add(X, Y), Answer) :-
+    Answer is X + Y,
+    !.
+
 compute(sub(X, Y), Answer) :-
     compute(X, XNumeric),
     compute(Y, YNumeric),
