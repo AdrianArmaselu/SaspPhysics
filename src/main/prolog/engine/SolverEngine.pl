@@ -1,8 +1,9 @@
 #include('../utils/Utils.pl').
 #include('../utils/Builtins.pl').
 
-_solve(Goals, Steps, SolutionSteps) :-
-    _solve(Goals, Steps, SolutionSteps).
+_solve(Goals, Steps) :-
+    _solve(Goals, Steps, SolutionSteps),
+    solution(SolutionSteps).
 
 %Base Case
 _solve([], SolutionSteps, SolutionSteps).
@@ -27,8 +28,13 @@ _solve_subproblem(Goal, Steps, [Solution | StepsWithSubgoalSteps]) :-
 _solve_subproblem(Goal, Steps, [Formula | Steps]) :-
     _specification(Goal, _, Formula, _).
 
+%Avoid circular problem solving
 _not_revisited(Goal, Steps) :- not _member(Goal, Steps).
 
+%Resolve Final Answer
 _compute_solution(Goal, Subgoals, Steps, Solution) :-
     _members(Subgoals, Steps),
     _specification(Goal, Subgoals, _, Solution).
+
+solution(S) :- not _not_solution(S).
+_not_solution(S) :- not solution(S).
