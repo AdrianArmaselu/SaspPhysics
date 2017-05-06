@@ -1,32 +1,34 @@
 #include('../utils/Utils.pl').
 #include('../utils/Builtins.pl').
 
-_solve(Goals, Params, SolutionSteps) :-
-    _solve(Goals, Params, _, [], SolutionSteps).
+_solve(Goals, Steps, SolutionSteps) :-
+    _solve(Goals, Steps, SolutionSteps).
 
 %Base Case
-_solve([], SolutionParams, SolutionParams, SolutionSteps, SolutionSteps).
+_solve([], SolutionSteps, SolutionSteps).
 
 %Solve each individual problem at a time recursively
-_solve([Goal | RemainingGoals], Params, SolutionParams, Steps, SolutionSteps) :-
-	_solve_subproblem(Goal, Params, ParamsWithGoalParams, Steps, StepsWithGoalSteps),
-	_solve(RemainingGoals, ParamsWithGoalParams, SolutionParams, StepsWithGoalSteps, SolutionSteps).
+_solve([Goal | RemainingGoals], Steps, SolutionSteps) :-
+	_solve_subproblem(Goal, Steps, StepsWithGoalSteps),
+	_solve(RemainingGoals, StepsWithGoalSteps, SolutionSteps).
 
 %The question has already been answered
-_solve_subproblem(Goal, Params, Params, Steps, [GoalParam | Steps]) :-
-    _elaborate(Goal, GoalParam, _, _),
-    _member(GoalParam, Params).
+_solve_subproblem(Goal, Steps, Steps) :-
+    _member(Goal, Steps).
 
 %Recursively answer the question by solving subquestions
-_solve_subproblem(Goal, Params, SolutionParams, Steps, [Solution | StepsWithSubgoalSteps]) :-
+_solve_subproblem(Goal, Steps, [Solution | StepsWithSubgoalSteps]) :-
     _not_revisited(Goal, Steps),
-    _elaborate(Goal, _, Subgoals, _),
-    _solve(Subgoals, Params, ParamsWithSubgoalParams, Steps, StepsWithSubgoalSteps),
-    _compute_solution(Goal, ParamsWithSubgoalParams, SolutionParams, Solution).
+    _specification(Goal, Subgoals, _, _),
+    _solve(Subgoals, Steps, StepsWithSubgoalSteps),
+    _compute_solution(Goal, Subgoals, StepsWithSubgoalSteps, Solution).
+
+%Sometimes a step is needed but does not exist
+_solve_subproblem(Goal, Steps, [Formula | Steps]) :-
+    _specification(Goal, _, Formula, _).
 
 _not_revisited(Goal, Steps) :- not _member(Goal, Steps).
 
-_compute_solution(Goal, Params, [Solution | Params], Solution) :-
-    _elaborate(Goal, _, _, GoalParams),
-    _members(GoalParams, Params),
-    _resolve_goal(Goal, GoalParams, Solution).
+_compute_solution(Goal, Subgoals, Steps, Solution) :-
+    _members(Subgoals, Steps),
+    _specification(Goal, Subgoals, _, Solution).

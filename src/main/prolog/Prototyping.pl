@@ -99,4 +99,4 @@ _debug([Arg|Arguments]):-
 %?- solve(problem([v0(1), theta(2), h0(3), h(4), gravity(9.8), v0y(10)], totalTime), X).
 %?- _members([v0(V0), theta(Theta), h0(H0), h(H), gravity(G), v0y(V0y)], [v0(1), theta(2), h0(3), h(4), gravity(9.8), v0y(10)]).
 %?- check(X).
-?-_append([1,2,3], [4,5,6], X).
+?- time(X).
