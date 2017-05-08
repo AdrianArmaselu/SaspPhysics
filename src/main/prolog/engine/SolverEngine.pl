@@ -20,13 +20,9 @@ _solve_subproblem(Goal, Steps, Steps) :-
 %Recursively answer the question by solving subquestions
 _solve_subproblem(Goal, Steps, [Solution | StepsWithSubgoalSteps]) :-
     _not_revisited(Goal, Steps),
-    _specification(Goal, Subgoals, _, _),
+    _specification(subgoals, Goal, Subgoals),
     _solve(Subgoals, Steps, StepsWithSubgoalSteps),
     _compute_solution(Goal, Subgoals, StepsWithSubgoalSteps, Solution).
-
-%Sometimes a step is needed but does not exist
-_solve_subproblem(Goal, Steps, [Formula | Steps]) :-
-    _specification(Goal, _, Formula, _).
 
 %Avoid circular problem solving
 _not_revisited(Goal, Steps) :- not _member(Goal, Steps).
@@ -34,7 +30,7 @@ _not_revisited(Goal, Steps) :- not _member(Goal, Steps).
 %Resolve Final Answer
 _compute_solution(Goal, Subgoals, Steps, Solution) :-
     _members(Subgoals, Steps),
-    _specification(Goal, Subgoals, _, Solution).
+    _specification(solution, Goal, Subgoals, Solution).
 
 solution(S) :- not _not_solution(S).
 _not_solution(S) :- not solution(S).
