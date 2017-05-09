@@ -1,80 +1,60 @@
 
-%%%%%% Total Time %%%%%%
-%totalTime =
+%%%%%% Total Time before touching ground%%%%%%
 
+%txmax = -v0y - sqrt(v0y^2) / -g
+_specification(subgoals, txmax(Object,Txmax), [h0(Object,H0), hx(Object,Hx), gravity(Object,G), v0y(Object,V0y)]).
 _specification(
-totalTime(TotalTime),
-[h0(H0), hx(Hx), gravity(G), v0y(V0y)],
-totalTime(divide(sub(neg(v0y), sqrt(sub(pow(v0y, 2), multiply([2, gravity, sub(h0, hx)])))), neg(gravity))),
-totalTime(divide(sub(neg(V0y), sqrt(sub(pow(V0y, 2), multiply([2, G, sub(H0, Hx)])))), neg(G)))
+solution,
+txmax(Object, Txmax),
+[h0(Object, H0), hx(Object,Hx), gravity(Object, G), v0y(Object, V0y)],
+txmax(Object, divide(sub(neg(V0y), sqrt(sub(pow(V0y, 2), multiply([2, G, sub(H0, Hx)])))), neg(G)))
 ).
+
+%txmax
+_specification(subgoals, txmax(Object, Txmax),[x(Object, X), vx(Object, Vx)]).
+_specification(solution, txmax(Object, Txmax),[x(Object, X), vx(Object, Vx)], txmax(Object, divide(X, Vx))).
 
 %%%%%% Max Height %%%%%%
 % h = -gt/2 + h0
+% solve([ymax(X)], [gravity(G), thmax(Thmax), h0(H0)]).
 
+_specification(subgoals, ymax(Object, Magnitude), [gravity(Object, G), thmax(Object, Thmax), h0(Object, H0)]).
 _specification(
-ymax(YMax),
-[gravity(G), thmax(Thmax), h0(H0)],
-ymax(undefined),
-yMax(add(neg(divide(multiply([G,Thmax]), 2)), H0))
+solution,
+ymax(Object, YMax),
+[gravity(Object, G), thmax(Object, Thmax), h0(Object, H0)],
+ymax(Object, add(neg(divide(multiply([G,Thmax]), 2)), H0))
 ).
 
 %%%%%% thmax: Maximum Height Time %%%%%%
 % t = V0y / g
-
+_specification(subgoals, thmax(Object, Thmax), [v0y(Object, V0y), gravity(Object, G)]).
 _specification(
-thmax(Thmax),
-[v0y(V0y), gravity(G)],
-thmax(undefined),
-thmax(divide(V0y, G))
+solution,
+thmax(Object, Thmax),
+[v0y(Object, V0y), gravity(Object, G)],
+thmax(Object, divide(V0y, G))
 ).
 
 %%%%%% V0Y %%%%%%
 _specification(
-v0y(V0y),
-[v0(V0), theta(Theta)],
-v0y(multiply([v0,sin(theta)])),
-v0y(multiply([V0,sin(Theta)]))
+subgoals,
+v0y(Object, V0y),
+[v0(Object, V0), theta(Object, Theta)]
 ).
 
-%%%%%% h0 %%%%%%
 _specification(
-h0(H0),
-[],
-Undefined,
-[h0(H0)]
+solution,
+v0y(Object, V0y),
+[v0(Object, V0), theta(Object, Theta)],
+v0y(Object, multiply([V0,sin(Theta)]))
 ).
 
-%%%%%% hx %%%%%%
+%%%%%%% dotheymeet %%%%%
+
 _specification(
-hx(Hx),
-[],
-Undefined,
-[]
+subgoals,
+theymeet(Object1, Object2, Time1),
+[time(Object1, T1), time(Object2, T2)],
+answer
 ).
-
-%%%%%% gravity %%%%%%
-_specification(
-gravity(G),
-[],
-Undefined,
-[]
-).
-
-%%%%%% theta %%%%%%
-_specification(
-theta(Theta),
-[],
-Undefined,
-[]
-).
-
-%%%%%% v0 %%%%%%
-_specification(
-v0(V0),
-[],
-Undefined,
-Undefined
-).
-
-
