@@ -1,60 +1,46 @@
+%##################################################################
 
-%%%%%% Total Time before touching ground%%%%%%
-
-%txmax = -v0y - sqrt(v0y^2) / -g
-_specification(subgoals, txmax(Object,Txmax), [h0(Object,H0), hx(Object,Hx), gravity(Object,G), v0y(Object,V0y)]).
-_specification(
-solution,
-txmax(Object, Txmax),
-[h0(Object, H0), hx(Object,Hx), gravity(Object, G), v0y(Object, V0y)],
-txmax(Object, divide(sub(neg(V0y), sqrt(sub(pow(V0y, 2), multiply([2, G, sub(H0, Hx)])))), neg(G)))
-).
-
-%txmax
-_specification(subgoals, txmax(Object, Txmax),[x(Object, X), vx(Object, Vx)]).
-_specification(solution, txmax(Object, Txmax),[x(Object, X), vx(Object, Vx)], txmax(Object, divide(X, Vx))).
-
-%%%%%% Max Height %%%%%%
-% h = -gt/2 + h0
-% solve([ymax(X)], [gravity(G), thmax(Thmax), h0(H0)]).
-
-_specification(subgoals, ymax(Object, Magnitude), [gravity(Object, G), thmax(Object, Thmax), h0(Object, H0)]).
-_specification(
-solution,
-ymax(Object, YMax),
-[gravity(Object, G), thmax(Object, Thmax), h0(Object, H0)],
-ymax(Object, add(neg(divide(multiply([G,Thmax]), 2)), H0))
-).
-
-%%%%%% thmax: Maximum Height Time %%%%%%
-% t = V0y / g
-_specification(subgoals, thmax(Object, Thmax), [v0y(Object, V0y), gravity(Object, G)]).
-_specification(
-solution,
-thmax(Object, Thmax),
-[v0y(Object, V0y), gravity(Object, G)],
-thmax(Object, divide(V0y, G))
-).
-
-%%%%%% V0Y %%%%%%
-_specification(
-subgoals,
-v0y(Object, V0y),
-[v0(Object, V0), theta(Object, Theta)]
-).
-
-_specification(
-solution,
-v0y(Object, V0y),
-[v0(Object, V0), theta(Object, Theta)],
-v0y(Object, multiply([V0,sin(Theta)]))
-).
-
-%%%%%%% dotheymeet %%%%%
+%#Calculating time given initial velocity, angle, initial height and final height.
 
 _specification(
 subgoals,
-theymeet(Object1, Object2, Time1),
-[time(Object1, T1), time(Object2, T2)],
-answer
-).
+projectile_time(Object1, PT),
+[v0(Object1, V0), theta(Object1, Theta), h0(Object1, H0), h1(Object1, H1), g(Object1, G)]).
+
+_specification(
+solution,
+projectile_time(Object1, PT),
+[v0(Object1, V0), theta(Object1, Theta), h0(Object1, H0), h1(Object1, H1), g(Object1, G)],
+projectile_time(Object1, divide(add(neg(multiply([V0,sin(Theta)])), sqrt(sub(pow(multiply([V0,sin(Theta)]), 2), multiply([2, G, sub(H0, H1)])))), neg(G)))).
+
+
+%##################################################################
+
+%#Calculating vertical displacement given intial vertical velocity, final vertical velocity.
+
+_specification(
+subgoals,
+vertical_displacement1(Object1, VD1),
+[v0(Object1, V0), v1(Object1, V1), g(Object1, G)]).
+
+_specification(
+solution,
+vertical_displacement1(Object1, VD1),
+[v0(Object1, V0), v1(Object1, V1), g(Object1, G)],
+vertical_displacement(Object1, divide(sub(pow(V0,2), pow(V1,2)), multiply(2,G)))).
+
+
+%##################################################################
+
+%#Calculating vertical displacement given initial velocity, theta and time.
+
+_specification(
+subgoals,
+vertical_displacement2(Object1, VD2),
+[v0(Object1, V0), theta(Object1, Theta), t(Object1, T), g(Object1, G)]).
+
+_specification(
+solution,
+vertical_displacement2(Object1, VD2),
+[v0(Object1, V0), theta(Object1, Theta), t(Object1, T), g(Object1, G)],
+vertical_displacement2(Object1, sub(multiply(multiply([V0,sin(Theta)]),T), divide(multiply(G, pow(T,2)), 2)))).
