@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public class PrologSolver {
 
     private static final String SASP_FOLDER = "src/main/prolog";
-    private static final String SASP_FILE = "PhysAi.pl";
+    private static final String SASP_FILE = "MotionQueries.pl";
     private static final String PARSER_FILE = "src/main/prolog/ExpressionParser.pl";
 
     public PrologSolver() {

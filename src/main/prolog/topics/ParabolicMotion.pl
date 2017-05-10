@@ -5,14 +5,13 @@
 _specification(
 subgoals,
 projectile_time(Object1, PT),
-[v0(Object1, V0), theta(Object1, Theta), h0(Object1, H0), h1(Object1, H1), g(Object1, G)]).
+[v0y(Object1, V0y), h0(Object1, H0), h1(Object1, H1), g(Object1, G)]).
 
 _specification(
 solution,
 projectile_time(Object1, PT),
-[v0(Object1, V0), theta(Object1, Theta), h0(Object1, H0), h1(Object1, H1), g(Object1, G)],
-projectile_time(Object1, divide(add(neg(multiply([V0,sin(Theta)])), sqrt(sub(pow(multiply([V0,sin(Theta)]), 2), multiply([2, G, sub(H0, H1)])))), neg(G)))).
-
+[v0y(Object1, V0y), h0(Object1, H0), h1(Object1, H1), g(Object1, G)],
+projectile_time(Object1, divide(sub(neg(V0y), sqrt(sub(pow(V0y, 2), multiply([2, G, sub(H0, H1)])))), neg(G)))).
 
 %##################################################################
 
@@ -44,3 +43,17 @@ solution,
 vertical_displacement2(Object1, VD2),
 [v0(Object1, V0), theta(Object1, Theta), t(Object1, T), g(Object1, G)],
 vertical_displacement2(Object1, sub(multiply(multiply([V0,sin(Theta)]),T), divide(multiply(G, pow(T,2)), 2)))).
+
+%%%%%% V0Y %%%%%%
+_specification(
+subgoals,
+v0y(Object, V0y),
+[v0(Object, V0), theta(Object, Theta)]
+).
+
+_specification(
+solution,
+v0y(Object, V0y),
+[v0(Object, V0), theta(Object, Theta)],
+v0y(Object, multiply([V0,sin(Theta)]))
+).

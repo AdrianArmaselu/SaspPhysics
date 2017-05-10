@@ -12,8 +12,14 @@ force(Object, multiply([Mass, Acceleration]))
 ).
 
 _specification(
+subgoals,
 friction_force(Magnitude),
-[mass(Mass), gravity(G), miu(Miu)],
-Formula,
+[mass(Object, Mass), gravity(Object, G), miu(Object, Miu)]
+).
+
+_specification(
+solution,
+friction_force(Magnitude),
+[mass(Object, Mass), gravity(Object, G), miu(Object, Miu)],
 friction_force(multiply([Mass, G, Miu]))
-) :- Formula =  friction_force = Miu * G * Mass.
+).
